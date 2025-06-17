@@ -6,10 +6,11 @@ def simple_cache(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        if args in cache:
+        args_kwargs = (*args, frozenset(kwargs.values()))
+        if args_kwargs in cache:
             print("Из кэша")
         else:
-            cache[args] = func(*args, **kwargs)
-        return cache.get(args)
+            cache[args_kwargs] = func(*args, **kwargs)
+        return cache.get(args_kwargs)
 
     return wrapper
