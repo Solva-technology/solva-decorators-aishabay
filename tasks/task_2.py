@@ -5,11 +5,11 @@ def simple_cache(func):
     cache = {}
 
     @wraps(func)
-    def wrapper(*args):
-        if cache.get(func.__name__ + str(args)):
+    def wrapper(*args, **kwargs):
+        if args in cache:
             print("Из кэша")
         else:
-            cache[func.__name__ + str(args)] = func(*args)
-        return cache.get(func.__name__ + str(args))
+            cache[args] = func(*args, **kwargs)
+        return cache.get(args)
 
     return wrapper
